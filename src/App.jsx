@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useProductList } from './hooks/useProductList';
 import './App.css';
 import ProductList from './components/ProductList';
 import Pagination from './components/Pagination';
@@ -7,6 +8,11 @@ function App() {
   const [page, setPage] = useState(1);
 
   const isCachedPage = page === 1;
+  const limit = 16;
+
+  const { products, total, loading, error } = useProductList(page, limit);
+
+  let totalPages = Math.ceil(total / limit) || 1;
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -25,26 +31,20 @@ function App() {
 
       <main className="app-content">
         <ProductList
-          products={[
-            { name: 'Product 1', price: 19.99, image: '' },
-            { name: 'Product 2', price: 29.99, image: '' },
-            { name: 'Product 3', price: 39.99, image: '' },
-            { name: 'Product 4', price: 49.99, image: '' },
-            { name: 'Product 5', price: 59.99, image: '' },
-          ]}
-          loading={false}
-          error={null}
+          products={products || []}
+          loading={loading}
+          error={error}
         />
       </main>
 
       <footer className="app-footer">
         <Pagination
           currentPage={page}
-          totalPages={5}
+          totalPages={totalPages}
           onPageChange={handlePageChange}
-          loading={false}
+          loading={loading}
           hasPrevious={page > 1}
-          hasNext={page < 5}
+          hasNext={page < totalPages}
         />
       </footer>
     </div>

@@ -8,15 +8,13 @@ const ProductCard = ({ product }) => {
   return (
     <div className="product-card">
       <div className="product-image-container">
-        <img src={product.image} alt={product.name} className="product-image" />
+        <img src={product.images[0]} alt={product.title} className="product-image" />
       </div>
 
       <div className="product-details">
-        <h3 className="product-name">{product.name}</h3>
+        <h3 className="product-name">{product.title}</h3>
         <p className="product-price">${product.price}</p>
-        <p className="product-description">
-          {product.description || ''}
-        </p>
+        <p className="product-description">{product.description || ''}</p>
       </div>
     </div>
   );
