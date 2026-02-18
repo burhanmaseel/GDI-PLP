@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import ProductList from './components/ProductList';
+import Pagination from './components/Pagination';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [page, setPage] = useState(1);
+
+  const isCachedPage = page === 1;
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="app">
+      <header>
+        <h1>GDI Dummy Products PLP</h1>
 
-export default App
+        <div className={`cache-badge ${isCachedPage ? 'visible' : ''}`}>
+          <span className="cache-badge-text">Cached Page</span>
+        </div>
+      </header>
+
+      <main className="app-content">
+        <ProductList
+          products={[
+            { name: 'Product 1', price: 19.99, image: '' },
+            { name: 'Product 2', price: 29.99, image: '' },
+            { name: 'Product 3', price: 39.99, image: '' },
+            { name: 'Product 4', price: 49.99, image: '' },
+            { name: 'Product 5', price: 59.99, image: '' },
+          ]}
+          loading={false}
+          error={null}
+        />
+      </main>
+
+      <footer className="app-footer">
+        <Pagination
+          currentPage={page}
+          totalPages={5}
+          onPageChange={handlePageChange}
+          loading={false}
+          hasPrevious={page > 1}
+          hasNext={page < 5}
+        />
+      </footer>
+    </div>
+  );
+};
+
+export default App;
