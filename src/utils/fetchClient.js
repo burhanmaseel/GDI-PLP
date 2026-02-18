@@ -1,4 +1,6 @@
-
+/**
+ * A simple fetch client to handle GET API requests
+ */
 class FetchClient {
 
   async get(endpoint, options = {}) {
@@ -19,8 +21,7 @@ class FetchClient {
 
       return await response.json();
     } catch (error) {
-      console.error('[Error] Fetch Client: ', error);
-      throw error;
+      throw new Error(`[Error]: ${error.message}`);
     }
   }
 }

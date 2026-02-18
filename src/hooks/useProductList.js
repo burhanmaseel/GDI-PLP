@@ -2,6 +2,12 @@ import { useState, useEffect } from 'react';
 import { fetchClient } from '../utils/fetchClient';
 import { cacheManager } from '../utils/cache';
 
+/**
+ * Hook to fetch and manage the product list with caching support
+ * @param {number} page - The current page number
+ * @param {number} limit - The number of products to fetch per page
+ * @returns {Object} An object containing products, total count, loading state, error state, and cached status
+ */
 export const useProductList = (page, limit) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,7 +50,7 @@ export const useProductList = (page, limit) => {
         });
 
       } catch (err) {
-        setError('[Error] Failed to load products: ' + err.message);
+        setError(err.message);
       } finally {
         setLoading(false);
       }

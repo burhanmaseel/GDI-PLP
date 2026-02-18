@@ -7,7 +7,6 @@ import Pagination from './components/Pagination';
 function App() {
   const [page, setPage] = useState(1);
   const limit = 16;
-
   const { products, total, loading, error, isCached } = useProductList(page, limit);
 
   let totalPages = Math.ceil(total / limit) || 1;
