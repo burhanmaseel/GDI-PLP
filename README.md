@@ -59,3 +59,12 @@ On every `page` or `limit` change, the hook:
 - **Lazy expiry**: Stale entries are only evicted when accessed (`get` / `has`), keeping the implementation simple with no background timers.
 - **CacheManager Available Methods**: `set(key, value)`, `get(key)`, `has(key)`, `clear()`.
 - **"Cached Page"** badge is shown in the header whenever `isCached` is `true`, giving the user a clear visual signal that no external request was made for the current page.
+
+### Tradeoffs and Assumptions
+
+- **Cache storage** In-memory `Map` Fast and zero-dependency, but cache is lost on page refresh. It can be improved by adding a `localStorage` cache would persist across sessions at the cost of added complexity.
+- **Cache TTL** 30 seconds hardcoded. A config constant or environment variable could make this more flexible.
+- **Lazy eviction** Expired entries removed on access No memory overhead from timers, but stale entries linger in the `Map` until they are next accessed. Acceptable for this scale.
+- **Pagination style** Previous / Next only Simpler UX; no direct page-number jumping. Sufficient for a task scope but could be extended with numbered page buttons.
+- **Page size** Fixed at 16 products Hardcoded in `App.jsx`. Could be made user-configurable (e.g. a dropdown) without changing the hook or cache logic.
+- **Error handling** Error message rendered in place of the product grid Keeps the UI simple. A retry button would improve the experience in production.
