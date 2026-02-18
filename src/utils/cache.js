@@ -60,4 +60,8 @@ class CacheManager {
     }
 }
 
+// Export the CacheManager class for unit tests
+export { CacheManager };
+
+// Export a singleton instance for use in the app
 export const cacheManager = new CacheManager(30);

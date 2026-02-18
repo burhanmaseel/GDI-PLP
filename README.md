@@ -25,6 +25,11 @@ A paginated Product Listing Page (PLP) built with React. It fetches products fro
    npm run build
    ```
 
+4. **Run unit tests**
+   ```bash
+   npm run test
+   ```
+
 ### Architectural Decisions
 
 The project follows a **separation of concerns** pattern, keeping data-fetching logic, UI components, and utility modules in distinct layers

@@ -26,4 +26,8 @@ class FetchClient {
   }
 }
 
+// Export the FetchClient class for unit tests
+export { FetchClient };
+
+// Export a singleton instance for use in the app
 export const fetchClient = new FetchClient();
