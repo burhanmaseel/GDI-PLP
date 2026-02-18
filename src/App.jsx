@@ -18,8 +18,8 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <header>
+    <div className="app-container">
+      <header className="app-header">
         <h1>GDI Dummy Products PLP</h1>
 
         <div className={`cache-badge ${isCached ? 'visible' : ''}`}>
