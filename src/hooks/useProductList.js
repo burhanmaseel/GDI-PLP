@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { fetchClient } from '../utils/fetchClient';
+import { cacheManager } from '../utils/cache';
 
 export const useProductList = (page, limit) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isCached, setIsCached] = useState(false);
 
   useEffect(() => {
     const url = 'https://dummyjson.com/products?limit=' + limit + '&skip=' + (page - 1) * limit;
@@ -12,6 +14,16 @@ export const useProductList = (page, limit) => {
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
+      setIsCached(false);
+
+      const cachedData = cacheManager.get(url);
+      if (cachedData) {
+        setData(cachedData);
+        setIsCached(true);
+        setLoading(false);
+
+        return;
+      }
 
       try {
         const result = await fetchClient.get(url);
@@ -26,6 +38,11 @@ export const useProductList = (page, limit) => {
           total: result.total
         });
 
+        cacheManager.set(url, {
+          products: result.products,
+          total: result.total
+        });
+
       } catch (err) {
         setError('[Error] Failed to load products: ' + err.message);
       } finally {
@@ -36,5 +53,5 @@ export const useProductList = (page, limit) => {
     fetchProducts();
   }, [page, limit]);
 
-  return { ...data, loading, error };
+  return { ...data, loading, error, isCached };
 };

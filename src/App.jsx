@@ -6,11 +6,9 @@ import Pagination from './components/Pagination';
 
 function App() {
   const [page, setPage] = useState(1);
-
-  const isCachedPage = page === 1;
   const limit = 16;
 
-  const { products, total, loading, error } = useProductList(page, limit);
+  const { products, total, loading, error, isCached } = useProductList(page, limit);
 
   let totalPages = Math.ceil(total / limit) || 1;
 
@@ -24,7 +22,7 @@ function App() {
       <header>
         <h1>GDI Dummy Products PLP</h1>
 
-        <div className={`cache-badge ${isCachedPage ? 'visible' : ''}`}>
+        <div className={`cache-badge ${isCached ? 'visible' : ''}`}>
           <span className="cache-badge-text">Cached Page</span>
         </div>
       </header>

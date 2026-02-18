@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+
+.cache-badge {
+  display: none;
+}
+
+.cache-badge.visible {
+  display: block;
+}
