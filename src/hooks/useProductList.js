@@ -16,6 +16,8 @@ export const useProductList = (page, limit) => {
 
   useEffect(() => {
     const url = 'https://dummyjson.com/products?limit=' + limit + '&skip=' + (page - 1) * limit;
+    const controller = new AbortController();
+    const signal = controller.signal;
 
     const fetchProducts = async () => {
       setLoading(true);
@@ -32,7 +34,7 @@ export const useProductList = (page, limit) => {
       }
 
       try {
-        const result = await fetchClient.get(url);
+        const result = await fetchClient.get(url, signal);
 
         if (!result || !result.products) {
           setError('[Error] Invalid response from server');
@@ -50,13 +52,23 @@ export const useProductList = (page, limit) => {
         });
 
       } catch (err) {
-        setError(err.message);
+        if (err.name !== 'AbortError') {
+          setError(err.message);
+        } else {
+          console.log('Request aborted');
+        }
       } finally {
-        setLoading(false);
+        if (!signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchProducts();
+
+    return () => {
+      controller.abort();
+    };
   }, [page, limit]);
 
   return { ...data, loading, error, isCached };

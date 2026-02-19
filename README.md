@@ -39,6 +39,7 @@ The project follows a **separation of concerns** pattern, keeping data-fetching 
 - **Custom hook (`useProductList`):** Encapsulates all data-fetching and caching logic so `App.jsx` stays clean and declarative. It exposes `{ products, total, loading, error, isCached }`.
 - **Class-based utilities:** `CacheManager` and `FetchClient` are implemented as classes and exported as singletons (`cacheManager`, `fetchClient`). This makes them easy to mock in tests and reuse across the app without re-instantiation.
 - **URL as cache key:** The full paginated API URL (e.g. `https://dummyjson.com/products?limit=16&skip=0`) is used as the cache key, making it naturally unique per page and limit combination.
+- **AbortController:** Used to cancel the fetch request when the component unmounts or when the page changes, preventing race conditions and unnecessary network requests.
 - **Vite + React:** Chosen for fast HMR during development and a minimal, modern project setup.
 
 ### State and Cache Management Explanation
